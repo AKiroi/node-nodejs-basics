@@ -3,3 +3,4 @@ const copy = async () => {
 };
 
 await copy();
+console.log('dsds');
