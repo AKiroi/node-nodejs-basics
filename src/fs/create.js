@@ -1,16 +1,22 @@
-import { writeFile } from 'fs/promises';
+import { writeFile, access } from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const dirname = path.dirname(fileURLToPath(import.meta.url));
-const pathToFile = path.resolve(dirname, 'files', 'fresh.txt');
+const pathDir = path.dirname(fileURLToPath(import.meta.url));
 
-const create = async () => {
-	try {
-		await writeFile(pathToFile, 'I am fresh and young', { flag: 'wx' });
-	} catch {
-		throw new Error('fs operation failed');
-	}
+const create = async (pathFile) => {
+  try {
+    if (
+      await access(pathFile)
+        .then(() => true)
+        .catch(() => false)
+    ) {
+      throw new Error('fs operation failed');
+    }
+    await writeFile(pathFile, 'I am fresh and young', { flag: 'wx' });
+  } catch (e) {
+    console.error(e.message);
+  }
 };
 
-await create();
+await create(path.join(pathDir, 'files', 'fresh.txt'));
