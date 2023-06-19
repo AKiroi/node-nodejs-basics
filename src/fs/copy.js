@@ -13,9 +13,8 @@ const copy = async (curDir, copyDir) => {
   try {
     if (!(await isExists(curDir)) || (await isExists(copyDir))) {
       throw new Error('FS operation failed');
-    } else {
-      await cp(curDir, copyDir, { recursive: true });
     }
+    await cp(curDir, copyDir, { recursive: true });
   } catch (e) {
     console.error(e.message);
   }
